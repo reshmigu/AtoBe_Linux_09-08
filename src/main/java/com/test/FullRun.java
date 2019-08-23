@@ -144,12 +144,12 @@ public class FullRun {
 			e.printStackTrace();
 		}
 		TestRun testRun = apiIntegration.getTestRun("TP-4", testExecutionid);
-		if (response.getStatusCode() == 400 && !testRun.getStatus().equals("PASS"))
+		if (response.getStatusCode() == 200 && !testRun.getStatus().equals("PASS"))
 			apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
-		else if (response.getStatusCode() == 400 && !testRun.getStatus().equals("FAIL")) {
+		else if (response.getStatusCode() == 200 && !testRun.getStatus().equals("FAIL")) {
 			apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
 		}
-		assertEquals(response.getStatusCode(), 400);
+		assertEquals(response.getStatusCode(), 200);
 		LOGGER.info("Response :" + response.asString());
 		LOGGER.info("Status Code :" + response.getStatusCode());
 		LOGGER.info("Does Reponse contains 'put_test_employee'? :" + response.asString().contains("put_test_employee"));
