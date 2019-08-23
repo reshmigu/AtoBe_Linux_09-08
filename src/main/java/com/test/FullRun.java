@@ -146,7 +146,7 @@ public class FullRun {
 		TestRun testRun = apiIntegration.getTestRun("TP-4", testExecutionid);
 		if (response.getStatusCode() == 200 && !testRun.getStatus().equals("PASS"))
 			apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
-		else if (response.getStatusCode() == 200 && !testRun.getStatus().equals("FAIL")) {
+		else if (response.getStatusCode() != 200 && !testRun.getStatus().equals("FAIL")) {
 			apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
 		}
 		assertEquals(response.getStatusCode(), 200);
