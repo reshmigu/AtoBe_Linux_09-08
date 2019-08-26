@@ -82,12 +82,17 @@ public class GenerateJasperReport {
 		 */
 
 		// Export to PDF.
+		try {
 		JasperExportManager.exportReportToPdfFile(jasperPrint, "test-output/report.pdf");
 		//JasperExportManager.exportReportToHtmlFile( "report.pdf", "report.html");
-		File pdf = new File("report.pdf");
-		pdf.mkdirs();
+		/*File pdf = new File("report.pdf");
+		//pdf.mkdirs();
 
-		JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(pdf));
+		JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(pdf));*/
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		System.out.println("Done!");
 		System.out.println(LocalDateTime.now(ZoneId.of("Asia/Kolkata"))+" ************* ");
 	}

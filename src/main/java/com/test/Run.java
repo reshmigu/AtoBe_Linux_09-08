@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.velocity.VelocityContext;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
@@ -19,7 +22,6 @@ import com.test.xrayapis.CreateIssueDTO;
 import com.test.xrayapis.GenerateJasperReport;
 import com.test.xrayapis.JasperBugDTO;
 import com.test.xrayapis.JasperReportDTO;
-import com.test.xrayapis.ResponseDTO;
 import com.test.xrayapis.TestExecution;
 import com.test.xrayapis.TestRun;
 import com.test.xrayapis.XrayAPIIntegration;
@@ -222,6 +224,35 @@ public class Run {
 			generateJasperReport.createReport(jasperReportDTO,jasperBugDTOList);
 			
 			mail test1 = new mail();
+			VelocityContext context = new VelocityContext();
+			// Parameters for report
+			int totalTestCases = 0;
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			if (jasperBugDTOList != null && !jasperBugDTOList.isEmpty()) {
+				totalTestCases = jasperBugDTOList.size();
+			}
+			int passCount=(int)jasperBugDTOList.stream().filter(a->a.getTestStatus().equalsIgnoreCase("PASS")).count();
+			int failCount=(int)jasperBugDTOList.stream().filter(a->a.getTestStatus().equalsIgnoreCase("FAIL")).count();
+			int bugCount=(int)jasperBugDTOList.stream().filter(a->a.getBugLink()!=null).count();
+			context.put("projectName", jasperReportDTO.getProjectName());
+			context.put("issueId", jasperReportDTO.getIssueId());
+			context.put("summary", jasperReportDTO.getSummary());
+			context.put("description", jasperReportDTO.getDescription());
+			context.put("startedDate", jasperReportDTO.getStartedDate());
+			context.put("endDate", jasperReportDTO.getEndDate());
+			context.put("executedBy", jasperReportDTO.getExecutedBy());
+			context.put("assignee", jasperReportDTO.getAssignee());
+			context.put("totalTestCases", totalTestCases);
+			context.put("passCount", passCount);
+			context.put("failCount", failCount);
+			context.put("bugCount", bugCount);
+			context.put("xrayLink", jasperReportDTO.getXrayLink());
+			context.put("issueLink", jasperReportDTO.getIssueIdLink());
+			context.put("jasperBugDTOList", jasperBugDTOList);
+			
+			
+			
+			test1.sendEmailWithTemplate("test", Arrays.asList("reshmi.g@thinkpalm.com"), "templates/eu_accountActivation.vm", context);
 			test1.mailm("test-output/report.pdf");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
