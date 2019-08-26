@@ -2,16 +2,23 @@ package com.test;
 
 import static org.testng.Assert.assertEquals;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ResourceBundle;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
@@ -24,14 +31,11 @@ import com.test.xrayapis.ResponseDTO;
 import com.test.xrayapis.TestExecution;
 import com.test.xrayapis.TestRun;
 import com.test.xrayapis.XrayAPIIntegration;
+
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import net.sf.jasperreports.engine.JRException;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.velocity.VelocityContext;
 
 public class FullRun {
 	// GET HTTP Protocol which is used to request data from a specific resource
@@ -275,9 +279,14 @@ public class FullRun {
 			context.put("issueLink", jasperReportDTO.getIssueIdLink());
 			context.put("jasperBugDTOList", jasperBugDTOList);
 			
+			/*Template template = Velocity.getTemplate("templates/eu_accountActivation.vm", "UTF-8");
+			FileWriter fwriter = new FileWriter("eu_accountActivation.html"); 
+			StringWriter writer = new StringWriter(); 
+			template.merge(context, writer); 
+			fwriter.write(writer.toString());
+			fwriter.close();*/
 			
-			
-			test1.sendEmailWithTemplate("test", Arrays.asList("reshmi.g@thinkpalm.com","nasia.t@thinkpalm.com"), "templates/eu_accountActivation.vm", context);
+			test1.sendEmailWithTemplate("test", Arrays.asList("reshmi.g@thinkpalm.com","nasia.t@thinkpalm.com"), "templates/xray_report.vm", context);
 			test1.mailm("test-output/report.pdf");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

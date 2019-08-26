@@ -1,6 +1,8 @@
 package com.test;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Properties;
@@ -80,7 +82,7 @@ public class mail {
 	}
 
 	public void sendEmailWithTemplate(final String subject, final List<String> emailToAddresses, String templatePath,
-			VelocityContext context) {
+			VelocityContext context) throws IOException {
 		try {
 			String host = "smtp.office365.com";
 			Properties p = new Properties();
@@ -91,6 +93,12 @@ public class mail {
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);
+			
+			FileWriter fwriter = new FileWriter("test-output/xray_report.html"); 
+			/*StringWriter writer = new StringWriter(); 
+			template.merge(context, writer);*/ 
+			fwriter.write(writer.toString());
+			fwriter.close();
 			Properties props = new Properties();
 			props.put("mail.smtp.host", host);
 			props.put("mail.smtp.auth", "true");
