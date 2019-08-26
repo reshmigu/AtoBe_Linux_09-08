@@ -247,7 +247,7 @@ public class FullRun {
 			generateJasperReport.createReport(jasperReportDTO,jasperBugDTOList);
 			
 			mail test1 = new mail();
-			test1.mailm("report.pdf");
+			test1.mailm("test-output/report.pdf");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
