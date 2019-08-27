@@ -109,7 +109,7 @@ public class mail {
 			multipart.addBodyPart(messageBodyPart);
 			
 			messageBodyPart = new MimeBodyPart();
-			DataSource fds = new FileDataSource("/var/lib/jenkins/workspace/AtoBe_Linux_09-08/templates/images/ato-bee-logo.jpg");
+			DataSource fds = new FileDataSource("/var/lib/jenkins/jobs/AtoBe_Linux_09-08/templates/images/ato-bee-logo.jpg");
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<logo>");
 			
@@ -119,7 +119,7 @@ public class mail {
 
 			multipart.addBodyPart(messageBodyPart);
 			messageBodyPart = new MimeBodyPart();
-			fds = new FileDataSource("/var/lib/jenkins/workspace/AtoBe_Linux_09-08/templates/images/banner.jpg");
+			fds = new FileDataSource("/var/lib/jenkins/jobs/AtoBe_Linux_09-08/templates/images/banner.jpg");
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<banner>");
 			
