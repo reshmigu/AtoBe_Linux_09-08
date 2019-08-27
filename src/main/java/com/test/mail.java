@@ -110,7 +110,7 @@ public class mail {
 			multipart.addBodyPart(messageBodyPart);
 			
 			messageBodyPart = new MimeBodyPart();
-			DataSource fds = new FileDataSource(fullPath);
+			DataSource fds = new FileDataSource("file:/restassured.jar!/templates/images/ato-bee-logo.jpg");
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<logo>");
 			
@@ -120,7 +120,7 @@ public class mail {
 
 			multipart.addBodyPart(messageBodyPart);
 			messageBodyPart = new MimeBodyPart();
-			fds = new FileDataSource(fullPath1);
+			fds = new FileDataSource("file:/restassured.jar!/templates/images/banner.jpg");
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<banner>");
 			
