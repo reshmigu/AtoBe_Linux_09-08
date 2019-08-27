@@ -1,180 +1,129 @@
- <!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Security Quotient mailer</title>
-	<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>A-to-Be</title>
+  </head>
+  <body style="font-family: sans-serif; font-size: 12px;line-height: 1.4;">
+      <div style="max-width: 600px;margin: auto">
+      <div style="padding-left:25px;">
+      <img src="/images/ato-bee-logo.jpg"></div>
+      <div>
+      <img src="/images/banner.jpg" style="width: 100%"></div>
+    
+      <h3 style="text-align: center; color: #0056ab">A-to-Be Xray Test Execution Report</h3>
+      <table style="width: 100%">
+          <tr>
+              <td >
+                  <table  cellpadding="3">
+                      <tr>
+                          <th style="text-align: left">Project Name</th>
+                          <td style="color:#666; vertical-align: top">$projectName</td>
+                      </tr>
+                       <tr>
+                          <th style="text-align:left;">Test Run Issue Id</th>
+                          <td style="color:#666; vertical-align: top"><a href="$issueLink">	$issueId</a></td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:left;">Test Run Summary</th>
+                          <td style="color:#666;vertical-align: top">$summary</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:left;">Test Run Description</th>
+                          <td style="color:#666; vertical-align: top">$description</td>
+                      </tr>
+                  </table>
+              </td>
+              <td style="width: 45%; vertical-align: top" align="right">
+                  <table  cellpadding="3">
+                      <tr>
+                          <th style="text-align: left">Execution Started At</th>
+                          <td style="color:#666">$startedDate</td>
+                      </tr>
+                       <tr>
+                          <th style="text-align:left;">Execution Finished At</th>
+                          <td style="color:#666">$endDate</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:left;">Executed By</th>
+                          <td style="color:#666">$executedBy</td>
+                      </tr>
+                      
+                  </table>
 
-<body style="margin: 0px;padding: 0px">
-<h2 align="middle">JIRA X-RAY TEST EXECUTION REPORT</h2>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: #f1f5f6; padding:27px 0px; height: 100%">
-	  <tbody>
-		<tr>
-		  <td>
-			  <table width="600" border="0" cellspacing="0" cellpadding="0" style="margin: 0px auto">
-				  <tbody>
+              </td>
+          </tr>
+      </table>
+    
+	
+	<h3 style=" color: #0056ab; margin-top: 20px;">Execution Summary</h3>
+
+      
+      <table style="width: 100%; text-align: center" cellpadding="3">
+          <tr style="text-transform: uppercase; font-size: 11px;">
+              <th style="border-bottom: 1px solid #eee; width: 108px">Total Test case	
+</th>
+              <th style="border-bottom: 1px solid #eee">Passed
+</th>
+              <th style="border-bottom: 1px solid #eee">Failed
+</th>
+              <th style="border-bottom: 1px solid #eee; width: 108px"> Bugs Reported</th>
+          </tr>
+          <tr>
+              <td style="border-bottom: 1px solid #eee;color:#12a107">$totalTestCases</td>
+              <td style="border-bottom: 1px solid #eee;color:#12a107">$passCount</td>
+              <td style="border-bottom: 1px solid #eee;color:#12a107">$failCount</td>
+              <td style="border-bottom: 1px solid #eee;color:#12a107">$bugCount</td>
+          </tr>
+      </table>
+      <h3 style=" color: #0056ab; margin-top: 20px;">Test Case Execution Status</h3>
+
+      
+      <table style="width: 100%; text-align: left" cellpadding="3">
+          <tr style="text-transform: uppercase; font-size: 11px;">
+              <th style="border-bottom: 1px solid #eee;width: 106px;">Test Case ID
+	
+</th>
+              <th style="border-bottom: 1px solid #eee; text-align: center">Status
+</th>
+              <th style="border-bottom: 1px solid #eee; width: 108px">Bugs Created
+</th>
+              
+          </tr>
+ 
+          #foreach( $bug in $jasperBugDTOList )
 					<tr>
-					  <td>					   
-						Project Name:
-					</td>
-					 <td>					   
-						$projectName
-					</td>
-					</tr>
-					
-					<tr>
-					  <td>					   
-						Test Run Issue Id:
-					</td>
-					 <td>					   
-					<a href="$issueLink">	$issueId</a>
-					</td>
-					</tr>
-					
-					<tr>
-					  <td>					   
-						Test Run Summary:
-					</td>
-					 <td>					   
-						$summary
-					</td>
-					</tr>
-					
-					<tr>
-					  <td>					   
-						Test Run Description:
-					</td>
-					 <td>					   
-						$description
-					</td>
-					</tr>
-					
-					<tr>
-					  <td>					   
-						Execution Started At:
-					</td>
-					 <td>					   
-						$startedDate
-					</td>
-					</tr>
-					
-					<tr>
-					  <td>					   
-						Execution Finished At:
-					</td>
-					 <td>					   
-						$endDate
-					</td>
-					</tr>
-					
-					<tr>
-					  <td>					   
-						Executed By:
-					</td>
-					 <td>					   
-						$executedBy
-					</td>
-					</tr>
-				  </tbody>
-			</table>
-			
-		<h4>Execution Summary</h4>
-		<table width="600" border="0" cellspacing="0" cellpadding="0" style="margin: 0px auto">
-				  <tbody>
-					<tr>
-					  <td>					   
-						Total test cases:
-					</td>
-					 <td>					   
-						$totalTestCases
-					</td>
-					</tr>
-					
-						<tr>
-					  <td>					   
-						Passed:
-					</td>
-					 <td>					   
-						$passCount
-					</td>
-					</tr>
-					
-						<tr>
-					  <td>					   
-						Failed:
-					</td>
-					 <td>					   
-						$failCount
-					</td>
-					</tr>
-					
-						<tr>
-					  <td>					   
-						Bugs Reported:
-					</td>
-					 <td>					   
-						$bugCount
-					</td>
-					</tr>
-					
-					 </tbody>
-			</table>
-					<br><br>
-					<table width="600" border="0" cellspacing="0" cellpadding="0" style="margin: 0px auto">
-				  <tbody>
-				  <tr>
-				  <td>
-				  Test Case Id
-				  </td>
-				   <td>
-				  Test Execution Status
-				  </td>
-				   <td>
-				  Bugs Created
-				  </td>
-				  
-				  </tr>
-				  
-				  #foreach( $bug in $jasperBugDTOList )
-					<tr>
-					  <td>					   
+					  <td style="border-bottom: 1px solid #eee;color:#12a107">					   
 						<a href="$bug.testCaseLink">$bug.testCaseId</a>
 					</td>
-					 <td>					   
+					#if( $bug.testStatus.equals("PASS") )
+					 <td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center">					   
 						$bug.testStatus
-					</td>
+					#else
+						<td style="border-bottom: 1px solid #eee;color:#dd5050; text-align: center">					   
+						$bug.testStatus
+					#end
+					</td style="border-bottom: 1px solid #eee;color:#12a107">
 					#if( !$bug.linkedBugId  )
 					 <td>					   
 						
 					</td>
 					#else
-					<td>					   
+					<td style="border-bottom: 1px solid #eee;color:#12a107">					   
 					<a href="$bug.bugLink">$bug.linkedBugId</a>
 					</td>
 					#end
 					</tr>
 					#end
-			 </tbody>
-			</table>
-			<br>
-			<table width="600" border="0" cellspacing="0" cellpadding="0" style="margin: 0px auto">
-				  <tbody>
-				  <tr>
-					  <td>					   
-						Link to Xray Report:
-					</td>
-					 <td>					   
-						<a href="$xrayLink">Click here</a>
-					</td>
-					</tr>
-				  </tbody>
-				  </table>
-		  </td>
-		</tr>
-	  </tbody>
-	</table>
+      </table>
+          <div style="text-align: center;padding-top: 20px;">
+      <a href="$xrayLink" style="background: #0079ff;padding: 10px 15px; border-radius: 5px;color: #fff;cursor: pointer">Xray Report </a>
+      </div>
+      </div>
 
-</body>
+
+
+  </body>
 </html>
- 
