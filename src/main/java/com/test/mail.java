@@ -117,7 +117,7 @@ public class mail {
 
 			String path1 = this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath();
 			String fullPath1 = URLDecoder.decode(path1, "UTF-8");
-
+LOGGER.info(this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath()+"&&&");
 			multipart.addBodyPart(messageBodyPart);
 			messageBodyPart = new MimeBodyPart();
 			fds = new FileDataSource(fullPath1);
