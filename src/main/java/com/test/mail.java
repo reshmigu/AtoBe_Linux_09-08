@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Properties;
 
@@ -93,12 +94,37 @@ public class mail {
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);
-			
 			FileWriter fwriter = new FileWriter("test-output/xray_report.html"); 
-			/*StringWriter writer = new StringWriter(); 
-			template.merge(context, writer);*/ 
 			fwriter.write(writer.toString());
 			fwriter.close();
+			
+			String path = this.getClass().getClassLoader().getResource("templates/images/ato-bee-logo.jpg").getPath();
+			String fullPath = URLDecoder.decode(path, "UTF-8");
+			// creates message part
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setContent(writer.toString(), "text/html");
+			
+			// creates multi-part
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+			
+			messageBodyPart = new MimeBodyPart();
+			DataSource fds = new FileDataSource(fullPath);
+			messageBodyPart.setDataHandler(new DataHandler(fds));
+			messageBodyPart.setHeader("Content-ID", "<logo>");
+			
+
+			String path1 = this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath();
+			String fullPath1 = URLDecoder.decode(path1, "UTF-8");
+
+			multipart.addBodyPart(messageBodyPart);
+			messageBodyPart = new MimeBodyPart();
+			fds = new FileDataSource(fullPath1);
+			messageBodyPart.setDataHandler(new DataHandler(fds));
+			messageBodyPart.setHeader("Content-ID", "<banner>");
+			
+			multipart.addBodyPart(messageBodyPart);
+			
 			Properties props = new Properties();
 			props.put("mail.smtp.host", host);
 			props.put("mail.smtp.auth", "true");
@@ -126,8 +152,8 @@ public class mail {
 			// set email subject
 			message.setSubject(subject);
 
-			// message.setContent(writer.toString(), "text/html");
-			message.setText(writer.toString(), "UTF-8", "html");
+			 message.setContent(multipart);
+			//message.setText(writer.toString(), "UTF-8", "html");
 			// form all emails in a comma separated string
 			StringBuilder sb = new StringBuilder();
 			int i = 0;

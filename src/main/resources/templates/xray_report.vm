@@ -9,9 +9,9 @@
   <body style="font-family: sans-serif; font-size: 12px;line-height: 1.4;">
       <div style="max-width: 600px;margin: auto">
       <div style="padding-left:25px;">
-      <img src="/images/ato-bee-logo.jpg"></div>
+      <img src="cid:logo"></div>
       <div>
-      <img src="/images/banner.jpg" style="width: 100%"></div>
+      <img src="cid:banner" style="width: 100%"></div>
     
       <h3 style="text-align: center; color: #0056ab">A-to-Be Xray Test Execution Report</h3>
       <table style="width: 100%">
