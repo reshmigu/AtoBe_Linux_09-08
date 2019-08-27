@@ -100,7 +100,7 @@ public class mail {
 			
 			String path = this.getClass().getClassLoader().getResource("templates/images/ato-bee-logo.jpg").getPath();
 			String fullPath = URLDecoder.decode(path, "UTF-8");
-			LOGGER.info(this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath()+"&&&");
+		
 			// creates message part
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setContent(writer.toString(), "text/html");
@@ -110,7 +110,7 @@ public class mail {
 			multipart.addBodyPart(messageBodyPart);
 			
 			messageBodyPart = new MimeBodyPart();
-			DataSource fds = new FileDataSource("restassured.jar!/templates/images/ato-bee-logo.jpg");
+			DataSource fds = new FileDataSource(fullPath);
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<logo>");
 			
@@ -120,7 +120,7 @@ public class mail {
 
 			multipart.addBodyPart(messageBodyPart);
 			messageBodyPart = new MimeBodyPart();
-			fds = new FileDataSource("restassured.jar!/templates/images/banner.jpg");
+			fds = new FileDataSource(fullPath1);
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<banner>");
 			
