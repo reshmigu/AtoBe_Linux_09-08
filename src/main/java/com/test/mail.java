@@ -100,6 +100,7 @@ public class mail {
 			
 			String path = this.getClass().getClassLoader().getResource("templates/images/ato-bee-logo.jpg").getPath();
 			String fullPath = URLDecoder.decode(path, "UTF-8");
+			LOGGER.info(this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath()+"&&&");
 			// creates message part
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setContent(writer.toString(), "text/html");
