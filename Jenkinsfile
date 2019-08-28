@@ -248,7 +248,7 @@ print "totalpassed ${totalpassed}"
 		 def config = [:]
 	//def subject = config.subject ? config.subject : "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}!"
 	def subject = config.subject ? config.subject : "${env.JOB_NAME} Build Test Report - ${currentBuild.currentResult}!"
-         subject='A-to-Be CI Execution Report'
+       subject="A-to-Be CI Execution Report"
         // Attach buildlog when the build is not successfull
         def attachLog = (config.attachLog != null) ? config.attachLog : (currentBuild.currentResult != "SUCCESS")
 //	 def content = '${JELLY_SCRIPT,template="managed:Jelly2"}'
@@ -348,7 +348,7 @@ sb.append  '<div> <img src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAA
   sb.append '<tr style="text-transform: uppercase; font-size: 11px;"> <th style="border-bottom: 1px solid #eee; width: 108px">Total Test case </th> <th style="border-bottom: 1px solid #eee">Passed </th> <th style="border-bottom: 1px solid #eee">Failed </th> <th style="border-bottom: 1px solid #eee; width: 108px"> Bugs Reported</th> </tr>'
   sb.append '<tr>'  
  sb.append '<tr>'   
-   sb.append '<td style="border-bottom: 1px solid #eee;color:#12a107">' + env.totaltests + '</td>'
+   sb.append '<td style="border-bottom: 1px solid #eee;">' + env.totaltests + '</td>'
    sb.append '<td style="border-bottom: 1px solid #eee;color:#12a107">' + env.totalpassed + '</td>'
     sb.append '<td style="border-bottom: 1px solid #eee;color:#dd5050">' + env.totalfailed + '</td>'
     sb.append '<td style="border-bottom: 1px solid #eee;color:#dd5050">' + env.totalbugs + '</td>'	
@@ -373,19 +373,19 @@ sb.append ' <table style="width: 100%; text-align: left" cellpadding="3"> <tr st
     for (ArrayList<Map<String,String>> item : testArray) {  
 	if(item.flag == "1"){
 	
-	sb.append '<tr><td style="border-bottom: 1px solid #eee;color:#12a107">' + item.name + '</td>'
+	sb.append '<tr><td style="border-bottom: 1px solid #eee;">' + item.name + '</td>'
 	sb.append '<td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center">'
-	sb.append('<a href="'+item.url+'"'+' style="color:#12a107;"><b>PASS</b></a>');	
+	sb.append('<a href="'+item.url+'"'+' style="color:#12a107;">PASS</a>');	
 	sb.append '</td><td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center">'+ item.bug_id + '</td></tr>'
 	
 	}  
 		if(item.flag == "2"){		 
-		 	sb.append '<tr><td style="border-bottom: 1px solid #eee;color:#12a107">' + item.name + '</td>'
+		 	sb.append '<tr><td style="border-bottom: 1px solid #eee;">' + item.name + '</td>'
 	sb.append '<td style="border-bottom: 1px solid #eee;color:#dd5050; text-align: center">'
-	sb.append('<a href="'+item.url+'"'+' style="color:#dd5050;"><b>FAIL</b></a>');	
+	sb.append('<a href="'+item.url+'"'+' style="color:#dd5050;">FAIL</a>');	
 	sb.append '</td><td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center">'
 	if(item.bug_url != null)
-	    sb.append('<a href="'+item.bug_url+'"'+' style="color:#dd5050;"><b>'+item.bug_id+'</b></a>' + '</td></tr>')
+	    sb.append('<a href="'+item.bug_url+'"'+' style="color:#dd5050;">'+item.bug_id+'</a>' + '</td></tr>')
 	   else
 	    sb.append '</td><td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center">'+ item.bug_id + '</td></tr>'
 	
