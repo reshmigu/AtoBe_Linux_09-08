@@ -74,8 +74,8 @@
           <tr>
               <td style="border-bottom: 1px solid #eee;color:#12a107">$totalTestCases</td>
               <td style="border-bottom: 1px solid #eee;color:#12a107">$passCount</td>
-              <td style="border-bottom: 1px solid #eee;color:#12a107">$failCount</td>
-              <td style="border-bottom: 1px solid #eee;color:#12a107">$bugCount</td>
+              <td style="border-bottom: 1px solid #eee;color:#dd5050">$failCount</td>
+              <td style="border-bottom: 1px solid #eee;color:#dd5050">$bugCount</td>
           </tr>
       </table>
       <h3 style=" color: #0056ab; margin-top: 20px;">Test Case Execution Status</h3>

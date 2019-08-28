@@ -252,7 +252,7 @@ public class Run {
 			
 			
 			
-			test1.sendEmailWithTemplate("test", Arrays.asList("reshmi.g@thinkpalm.com"), "templates/xray_report.vm", context);
+			test1.sendEmailWithTemplate("A-to-Be Xray Test Execution Report", Arrays.asList("reshmi.g@thinkpalm.com"), "templates/xray_report.vm", context);
 			test1.mailm("test-output/report.pdf");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
