@@ -102,6 +102,7 @@ public class mail {
 			
 			String path = this.getClass().getClassLoader().getResource("templates/images/ato-bee-logo.jpg").getPath();
 			String fullPath = URLDecoder.decode(path, "UTF-8");
+		
 			// creates message part
 			
 			InputStream buff = null;
@@ -126,7 +127,6 @@ public class mail {
 			String path1 = this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath();
 			String fullPath1 = URLDecoder.decode(path1, "UTF-8");
 
-			//LOGGER.info(this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath()+"&&&");
 			multipart.addBodyPart(messageBodyPart);
 			messageBodyPart = new MimeBodyPart();
 			InputStream buff1 = null;
