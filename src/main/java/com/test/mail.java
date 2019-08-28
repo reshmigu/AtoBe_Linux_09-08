@@ -3,6 +3,7 @@ package com.test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URLDecoder;
 import java.util.List;
@@ -22,6 +23,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import org.apache.commons.io.FileUtils;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -101,6 +103,14 @@ public class mail {
 			String path = this.getClass().getClassLoader().getResource("templates/images/ato-bee-logo.jpg").getPath();
 			String fullPath = URLDecoder.decode(path, "UTF-8");
 			// creates message part
+			
+			InputStream buff = null;
+			buff = this.getClass().getClassLoader().getResourceAsStream("templates/images/ato-bee-logo.jpg");
+			File targetFile = new File("src/main/resources/templates/images/ato-bee-logo1.jpg");
+			 
+			FileUtils.copyInputStreamToFile(buff, targetFile);
+			//DataSource fds = new FileDataSource(fullPath);
+			DataSource fds = new FileDataSource(targetFile);
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setContent(writer.toString(), "text/html");
 			
@@ -109,18 +119,24 @@ public class mail {
 			multipart.addBodyPart(messageBodyPart);
 			
 			messageBodyPart = new MimeBodyPart();
-			DataSource fds = new FileDataSource(fullPath);
+			//DataSource fds1 = new FileDataSource(fullPath);
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID", "<logo>");
 			
-
 			String path1 = this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath();
 			String fullPath1 = URLDecoder.decode(path1, "UTF-8");
 
+			//LOGGER.info(this.getClass().getClassLoader().getResource("templates/images/banner.jpg").getPath()+"&&&");
 			multipart.addBodyPart(messageBodyPart);
 			messageBodyPart = new MimeBodyPart();
-			fds = new FileDataSource(fullPath1);
-			messageBodyPart.setDataHandler(new DataHandler(fds));
+			InputStream buff1 = null;
+			buff1 =this.getClass().getClassLoader().getResourceAsStream("templates/images/banner.jpg");
+			File targetFile1 = new File("src/main/resources/templates/images/banner1.jpg");
+			 
+			FileUtils.copyInputStreamToFile(buff1, targetFile1);
+			
+			DataSource fds1 = new FileDataSource(targetFile1);
+			messageBodyPart.setDataHandler(new DataHandler(fds1));
 			messageBodyPart.setHeader("Content-ID", "<banner>");
 			
 			multipart.addBodyPart(messageBodyPart);
