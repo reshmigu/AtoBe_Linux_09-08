@@ -248,7 +248,7 @@ print "totalpassed ${totalpassed}"
 		 def config = [:]
 	//def subject = config.subject ? config.subject : "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}!"
 	def subject = config.subject ? config.subject : "${env.JOB_NAME} Build Test Report - ${currentBuild.currentResult}!"
-       
+         subject='A-to-Be CI Execution Report'
         // Attach buildlog when the build is not successfull
         def attachLog = (config.attachLog != null) ? config.attachLog : (currentBuild.currentResult != "SUCCESS")
 //	 def content = '${JELLY_SCRIPT,template="managed:Jelly2"}'
