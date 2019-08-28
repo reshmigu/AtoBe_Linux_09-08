@@ -30,7 +30,7 @@ List testArray = new ArrayList<Map<String,String>>();
 try{
         stage('Checkout') {
 
-            git url: 'https://github.com/reshmigu/AtoBe_Linux_ver1.1.git', credentialsId: 'master', branch: 'master'
+            git url: 'https://github.com/reshmigu/AtoBe_Linux_09-08.git', credentialsId: 'master', branch: 'master'
 
         }
 
