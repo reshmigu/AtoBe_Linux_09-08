@@ -96,9 +96,9 @@ public class Mail {
 			Template template = Velocity.getTemplate(templatePath, "UTF-8");
 			StringWriter writer = new StringWriter();
 			template.merge(context, writer);
-			
-			try(FileWriter fwriter = new FileWriter("test-output/xray_report.html")){
-				fwriter.write(writer.toString());
+			try(FileWriter fwriter = new FileWriter("test-output/xray_report.html"))
+			{
+			fwriter.write(writer.toString());
 			}
 			
 			//String path = this.getClass().getClassLoader().getResource("templates/images/ato-bee-logo.jpg").getPath();

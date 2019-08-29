@@ -24,7 +24,7 @@
                       </tr>
                        <tr>
                           <th style="text-align:left;">Test Run Issue Id</th>
-                          <td style="color:#666; vertical-align: top"><a href="$issueLink">	$issueId</a></td>
+                          <td style="color:#666; vertical-align: top"><a href="$issueLink" style="color:#000000;">	$issueId</a></td>
                       </tr>
                       <tr>
                           <th style="text-align:left;">Test Run Summary</th>
@@ -72,7 +72,7 @@
               <th style="border-bottom: 1px solid #eee; width: 108px"> Bugs Reported</th>
           </tr>
           <tr>
-              <td style="border-bottom: 1px solid #eee;color:#12a107">$totalTestCases</td>
+              <td style="border-bottom: 1px solid #eee;">$totalTestCases</td>
               <td style="border-bottom: 1px solid #eee;color:#12a107">$passCount</td>
               <td style="border-bottom: 1px solid #eee;color:#dd5050">$failCount</td>
               <td style="border-bottom: 1px solid #eee;color:#dd5050">$bugCount</td>
@@ -95,31 +95,31 @@
  
           #foreach( $bug in $jasperBugDTOList )
 					<tr>
-					  <td style="border-bottom: 1px solid #eee;color:#12a107">					   
-						<a href="$bug.testCaseLink">$bug.testCaseId</a>
+					  <td style="border-bottom: 1px solid #eee;color:#12a107;text-align: center">					   
+						<a href="$bug.testCaseLink" style="color:#000000; font-size: 10.75px;">$bug.testCaseId</a>
 					</td>
 					#if( $bug.testStatus.equals("PASS") )
-					 <td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center">					   
+					 <td style="border-bottom: 1px solid #eee;color:#12a107; text-align: center;font-size: 10.75px;">					   
 						$bug.testStatus
 					#else
-						<td style="border-bottom: 1px solid #eee;color:#dd5050; text-align: center">					   
+						<td style="border-bottom: 1px solid #eee;color:#dd5050; text-align: center;font-size: 10.75px;">					   
 						$bug.testStatus
 					#end
-					</td style="border-bottom: 1px solid #eee;color:#12a107">
+					</td style="border-bottom: 1px solid #eee;color:#12a107;font-size: 10.75px;">
 					#if( !$bug.linkedBugId  )
 					 <td>					   
 						
 					</td>
 					#else
-					<td style="border-bottom: 1px solid #eee;color:#12a107">					   
-					<a href="$bug.bugLink">$bug.linkedBugId</a>
+					<td style="border-bottom: 1px solid #eee;color:#12a107;text-align: center">					   
+					<a href="$bug.bugLink" style="color:#000000;font-size: 10px;">$bug.linkedBugId</a>
 					</td>
 					#end
 					</tr>
 					#end
       </table>
           <div style="text-align: center;padding-top: 20px;">
-      <a href="$xrayLink" style="background: #0079ff;padding: 10px 15px; border-radius: 5px;color: #fff;cursor: pointer">Xray Report </a>
+      <a href="$xrayLink" style="background: #0079ff;padding: 10px 15px; border-radius: 5px;color: #FFFFFF;cursor: pointer">Xray Report </a>
       </div>
       </div>
 
