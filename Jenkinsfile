@@ -171,7 +171,7 @@ print "totalpassed ${totalpassed}"
 	
 //for loop starts
 
-    	for (Element table : doc.select("table")[4]) {
+    	for (Element table : doc.select("table")[5]) {
        // print "table found in else part"
         for (Element row : table.select("tr")) {
 		// print "*Row found in else part"
