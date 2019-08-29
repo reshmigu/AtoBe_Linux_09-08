@@ -42,41 +42,46 @@ public class FullRun {
 
 	// POST methods---is used to send data to a server to create the resource.
 	private static final Logger LOGGER = LogManager.getLogger(FullRun.class);
+	private static final String BROWSE = "/browse/";
+	private static final String RESPONSE = "Response :";
+	private static final String STATUS_CODE = "Status Code :";
+	private static final String RESTASSURED_BASE_URI = "http://dummy.restapiexample.com/api/v1";
 
-	String testExecutionid;
-	XrayAPIIntegration apiIntegration = new XrayAPIIntegration();
+	static String testExecutionid;
+	static XrayAPIIntegration apiIntegration = new XrayAPIIntegration();
 	XrayReport report = new XrayReport();
-	CreateIssueDTO createIssueDTO = null;
+	static CreateIssueDTO createIssueDTO = null;
 	CreateIssueDTO createBugDTO = null;
 	private static final ResourceBundle rb = ResourceBundle.getBundle("application");
 	private static final String BASE_URL = rb.getString("baseUrl");
-	private static final String project_Name = rb.getString("project.name");
-	private static final String xray_link = rb.getString("xray.link");
-	private static final String project_id = rb.getString("project.id");
+	private static final String PROJECT_NAME = rb.getString("project.name");
+	private static final String XRAY_LINK = rb.getString("xray.link");
+	private static final String PROJECT_ID = rb.getString("project.id");
+
 	@Test(priority = 0)
-	public void createIssue() throws URISyntaxException {
+	public static void createIssue() {
 		createIssueDTO = new CreateIssueDTO();
-		LocalDate date=LocalDate.now();
-		createIssueDTO.setDescription("AtoBe Automated Test Run "+ date.toString());
+		LocalDate date = LocalDate.now();
+		createIssueDTO.setDescription("AtoBe Automated Test Run " + date.toString());
 		createIssueDTO.setKey("TP");
 		createIssueDTO.setName("Test Execution");
-		createIssueDTO.setSummary("AtoBe Test Run "+ date.toString());
+		createIssueDTO.setSummary("AtoBe Test Run " + date.toString());
 		testExecutionid = apiIntegration.createIssue(createIssueDTO);
 		Assert.assertNotNull(testExecutionid);
 
 	}
 
 	@Test(priority = 1)
-	public void postTestExecution() throws URISyntaxException {
+	public void postTestExecution() {
 		int status;
 		status = apiIntegration.postTestExecution(testExecutionid);
 		assertEquals(200, status);
 	}
 
 	@Test(priority = 2)
-	public void createEmployee() throws URISyntaxException {
+	public static void createEmployee() throws URISyntaxException {
 
-		RestAssured.baseURI = "http://dummy.restapiexample.com/api/v1";
+		RestAssured.baseURI = RESTASSURED_BASE_URI;
 
 		String requestBody = "{\n" + "  \"name\": \"ABC\",\n" + "  \"salary\": \"5000\",\n" + "  \"age\": \"20\"\n"
 				+ "}";
@@ -86,31 +91,33 @@ public class FullRun {
 		try {
 			response = RestAssured.given().contentType(ContentType.JSON).body(requestBody).post("/create");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
-		LOGGER.info("Response :" + response.asString());
-		LOGGER.info("Status Code :" + response.getStatusCode());
-		LOGGER.info("Does Reponse contains 'ABC'? :" + response.asString().contains("ABC"));
+		if (response != null) {
+			LOGGER.info(RESPONSE + response.asString());
+			LOGGER.info(STATUS_CODE + response.getStatusCode());
+			LOGGER.info("Does Reponse contains 'ABC'? :" + response.asString().contains("ABC"));
 
-		TestRun testRun = apiIntegration.getTestRun("TP-2", testExecutionid);
-		if (response.getStatusCode() == 200 && !testRun.getStatus().equals("PASS"))
-			apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
+			TestRun testRun = apiIntegration.getTestRun("TP-2", testExecutionid);
+			if (response.getStatusCode() == 200 && !testRun.getStatus().equals("PASS"))
+				apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
 
-		else if (response.getStatusCode() != 200 && !testRun.getStatus().equals("FAIL")) {
-			apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
+			else if (response.getStatusCode() != 200 && !testRun.getStatus().equals("FAIL")) {
+				apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
+			}
+
+			assertEquals(200, response.getStatusCode());
+
 		}
-
-		assertEquals(200, response.getStatusCode());
-
 	}
 
 	// An update operation will happen if the Request-URI;PUT is idempotent
 	// means if you try to make a request multiple times,
 	// it would result in the same output as it would have no effect.
 	@Test(priority = 3)
-	public void updateEmployee() throws URISyntaxException {
+	public static void updateEmployee() throws URISyntaxException {
 
-		RestAssured.baseURI = "http://dummy.restapiexample.com/api/v1";
+		RestAssured.baseURI = RESTASSURED_BASE_URI;
 
 		String requestBody = "{\r\n" + " \"name\":\"put_test_employee\",\r\n" + " \"salary\":\"1123\",\r\n"
 				+ " \"age\":\"23\"\r\n" + "}";
@@ -120,45 +127,51 @@ public class FullRun {
 		try {
 			response = RestAssured.given().contentType(ContentType.JSON).body(requestBody).put("/update/4710");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
-		LOGGER.info("Does Reponse contains 'ABC'? :" + response.asString().contains("ABC"));
-		LOGGER.info("Response :" + response.asString());
-		LOGGER.info("Status Code :" + response.getStatusCode());
-		LOGGER.info("Does Reponse contains 'put_test_employee'? :" + response.asString().contains("put_test_employee"));
-
 		TestRun testRun = apiIntegration.getTestRun("TP-3", testExecutionid);
-		if (response.getStatusCode() == 200 && !testRun.getStatus().equals("PASS"))
-			apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
-		else if (response.getStatusCode() != 200 && !testRun.getStatus().equals("FAIL")) {
-			apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
+		if (response != null) {
+			LOGGER.info("Does Reponse contains 'ABC'? :" + response.asString().contains("ABC"));
+			LOGGER.info(RESPONSE + response.asString());
+			LOGGER.info(STATUS_CODE + response.getStatusCode());
+			LOGGER.info(
+					"Does Reponse contains 'put_test_employee'? :" + response.asString().contains("put_test_employee"));
+			if (response.getStatusCode() == 200 && !testRun.getStatus().equals("PASS"))
+				apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
+			else if (response.getStatusCode() != 200 && !testRun.getStatus().equals("FAIL")) {
+				apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
+			}
+
+			assertEquals(200, response.getStatusCode());
 		}
-		assertEquals(200, response.getStatusCode());
 	}
 
 	// it is used to �Delete� any resource specified
 	@Test(priority = 4)
-	public void deleteEmployee() throws URISyntaxException {
+	public static void deleteEmployee() throws URISyntaxException {
 
-		RestAssured.baseURI = "http://dummy.restapiexample.com/api/v1";
+		RestAssured.baseURI = RESTASSURED_BASE_URI;
 
 		Response response = null;
 
 		try {
 			response = RestAssured.given().contentType(ContentType.JSON).delete("/delete/11400");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
 		TestRun testRun = apiIntegration.getTestRun("TP-4", testExecutionid);
-		if (response.getStatusCode() == 400 && !testRun.getStatus().equals("PASS"))
-			apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
-		else if (response.getStatusCode() == 200 && !testRun.getStatus().equals("FAIL")) {
-			apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
+		if (response != null) {
+			if (response.getStatusCode() == 400 && !testRun.getStatus().equals("PASS"))
+				apiIntegration.updateTestCaseStatus(testRun.getId(), "PASS");
+			else if (response.getStatusCode() == 200 && !testRun.getStatus().equals("FAIL")) {
+				apiIntegration.updateTestCaseStatus(testRun.getId(), "FAIL");
+			}
+			assertEquals(response.getStatusCode(), 200);
+			LOGGER.info(RESPONSE + response.asString());
+			LOGGER.info(STATUS_CODE + response.getStatusCode());
+			LOGGER.info(
+					"Does Reponse contains 'put_test_employee'? :" + response.asString().contains("put_test_employee"));
 		}
-		assertEquals(response.getStatusCode(), 200);
-		LOGGER.info("Response :" + response.asString());
-		LOGGER.info("Status Code :" + response.getStatusCode());
-		LOGGER.info("Does Reponse contains 'put_test_employee'? :" + response.asString().contains("put_test_employee"));
 	}
 
 	// POJO (Plain Old Java Object) and we need to send it to the API call
@@ -175,8 +188,8 @@ public class FullRun {
 		response = RestAssured.given().contentType("application/json").body(student).when()
 				.post("http://www.thomas-bayer.com/restnames/countries.groovy");
 
-		LOGGER.info("Response :" + response.asString());
-		LOGGER.info("Status Code :" + response.getStatusCode());
+		LOGGER.info(RESPONSE + response.asString());
+		LOGGER.info(STATUS_CODE + response.getStatusCode());
 		LOGGER.info("Does Reponse contains 'Country-Name'? :" + response.asString().contains("Belgium"));
 		assertEquals(200, response.getStatusCode());
 
@@ -193,76 +206,73 @@ public class FullRun {
 		LOGGER.info("Does Reponse contains 'Country-Name'? :" + student.toString().contains("Belgium"));
 	}
 
-	/*@Test(priority = 5)
-	public void mailsend() {
-		mail test1 = new mail();
-		test1.mailm("test-output//emailable-report.html");
-
-	}*/
+	/*
+	 * @Test(priority = 5) public void mailsend() { mail test1 = new mail();
+	 * test1.mailm("test-output//emailable-report.html");
+	 * 
+	 * }
+	 */
 
 	@AfterSuite
 	public void afterAllTest() throws JRException, URISyntaxException {
-		List<TestExecution> testExecution = apiIntegration.getTestExecution(testExecutionid);
-	
-		List<JasperBugDTO> jasperBugDTOList=new ArrayList<>();
-		testExecution.forEach(a->{
-			JasperBugDTO jasperBugDTO=new JasperBugDTO();
-			if(a.getStatus().equalsIgnoreCase("FAIL")) {
-			try {
+		List<TestExecution> testExecution = XrayAPIIntegration.getTestExecution(testExecutionid);
+
+		List<JasperBugDTO> jasperBugDTOList = new ArrayList<>();
+		testExecution.forEach(a -> {
+			JasperBugDTO jasperBugDTO = new JasperBugDTO();
+			if (a.getStatus().equalsIgnoreCase("FAIL")) {
 				createBugDTO = new CreateIssueDTO();
-				LocalDate date=LocalDate.now();
-				createBugDTO.setDescription("AtoBe bug description "+ date.toString());
+				LocalDate date = LocalDate.now();
+				createBugDTO.setDescription("AtoBe bug description " + date.toString());
 				createBugDTO.setKey("TP");
 				createBugDTO.setTestKey(a.getKey());
 				createBugDTO.setName("Bug");
-				createBugDTO.setSummary("Defect for "+testExecutionid);
-				ResponseDTO response=apiIntegration.createIssueBug(createBugDTO);
-				
+				createBugDTO.setSummary("Defect for " + testExecutionid);
+				ResponseDTO response = apiIntegration.createIssueBug(createBugDTO);
+
 				jasperBugDTO.setLinkedBugId(response.getKey());
-				jasperBugDTO.setBugLink(BASE_URL+"/browse/"+response.getKey());
-				
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				jasperBugDTO.setBugLink(BASE_URL + BROWSE + response.getKey());
 			}
 			jasperBugDTO.setTestStatus(a.getStatus());
 			jasperBugDTO.setTestCaseId(a.getKey());
-			jasperBugDTO.setTestCaseLink(BASE_URL+"/browse/"+a.getKey());
+			jasperBugDTO.setTestCaseLink(BASE_URL + BROWSE + a.getKey());
 			jasperBugDTOList.add(jasperBugDTO);
 		});
 		try {
-			TestRun response=apiIntegration.getTestRun(testExecution.get(0).getKey(), testExecutionid);
-			GenerateJasperReport generateJasperReport= new GenerateJasperReport();
-			//report.sendReportAsExcel(testExecution, testExecutionid);
+			TestRun response = apiIntegration.getTestRun(testExecution.get(0).getKey(), testExecutionid);
+			GenerateJasperReport generateJasperReport = new GenerateJasperReport();
+			// report.sendReportAsExcel(testExecution, testExecutionid);
 			JasperReportDTO jasperReportDTO = new JasperReportDTO();
-			jasperReportDTO.setProjectName(project_Name);
+			jasperReportDTO.setProjectName(PROJECT_NAME);
 			jasperReportDTO.setIssueId(testExecutionid);
 			jasperReportDTO.setDescription(createIssueDTO.getDescription());
 			jasperReportDTO.setSummary(createIssueDTO.getSummary());
-			LOGGER.info("TEST EXECUTION TIME " +testExecution.get(0).getStartedOn());
+			LOGGER.info("TEST EXECUTION TIME " + testExecution.get(0).getStartedOn());
 			jasperReportDTO.setStartedDate(testExecution.get(0).getStartedOn());
-			LOGGER.info("JASPER REPORT TIME" +jasperReportDTO.getStartedDate());
-			LOGGER.info("SYSTEM TIME" +new Date());
+			LOGGER.info("JASPER REPORT TIME" + jasperReportDTO.getStartedDate());
+			LOGGER.info("SYSTEM TIME" + new Date());
 			jasperReportDTO.setEndDate(testExecution.get(0).getFinishedOn());
 			jasperReportDTO.setJasperBugDTO(jasperBugDTOList);
 			jasperReportDTO.setAssignee("assignee");
 			jasperReportDTO.setExecutedBy(response.getExecutedBy());
-			jasperReportDTO.setIssueIdLink(BASE_URL+"/browse/"+testExecutionid);
-			jasperReportDTO.setXrayLink((BASE_URL+xray_link).replace("selectedProjectKey=", "selectedProjectKey="+project_id));
-			generateJasperReport.createReport(jasperReportDTO,jasperBugDTOList);
-			
-			mail test1 = new mail();
+			jasperReportDTO.setIssueIdLink(BASE_URL + BROWSE + testExecutionid);
+			jasperReportDTO.setXrayLink(
+					(BASE_URL + XRAY_LINK).replace("selectedProjectKey=", "selectedProjectKey=" + PROJECT_ID));
+			generateJasperReport.createReport(jasperReportDTO, jasperBugDTOList);
+
+			Mail test1 = new Mail();
 			VelocityContext context = new VelocityContext();
 			// Parameters for report
 			int totalTestCases = 0;
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			if (jasperBugDTOList != null && !jasperBugDTOList.isEmpty()) {
+			// HashMap<String, Object> parameters = new HashMap<String, Object>();
+			if (!jasperBugDTOList.isEmpty()) {
 				totalTestCases = jasperBugDTOList.size();
 			}
-			int passCount=(int)jasperBugDTOList.stream().filter(a->a.getTestStatus().equalsIgnoreCase("PASS")).count();
-			int failCount=(int)jasperBugDTOList.stream().filter(a->a.getTestStatus().equalsIgnoreCase("FAIL")).count();
-			int bugCount=(int)jasperBugDTOList.stream().filter(a->a.getBugLink()!=null).count();
+			int passCount = (int) jasperBugDTOList.stream().filter(a -> a.getTestStatus().equalsIgnoreCase("PASS"))
+					.count();
+			int failCount = (int) jasperBugDTOList.stream().filter(a -> a.getTestStatus().equalsIgnoreCase("FAIL"))
+					.count();
+			int bugCount = (int) jasperBugDTOList.stream().filter(a -> a.getBugLink() != null).count();
 			context.put("projectName", jasperReportDTO.getProjectName());
 			context.put("issueId", jasperReportDTO.getIssueId());
 			context.put("summary", jasperReportDTO.getSummary());
@@ -278,19 +288,20 @@ public class FullRun {
 			context.put("xrayLink", jasperReportDTO.getXrayLink());
 			context.put("issueLink", jasperReportDTO.getIssueIdLink());
 			context.put("jasperBugDTOList", jasperBugDTOList);
-			
-			/*Template template = Velocity.getTemplate("templates/eu_accountActivation.vm", "UTF-8");
-			FileWriter fwriter = new FileWriter("eu_accountActivation.html"); 
-			StringWriter writer = new StringWriter(); 
-			template.merge(context, writer); 
-			fwriter.write(writer.toString());
-			fwriter.close();*/
-			
-			test1.sendEmailWithTemplate("A-to-Be Xray Test Execution Report", Arrays.asList("reshmi.g@thinkpalm.com","nasia.t@thinkpalm.com"), "templates/xray_report.vm", context);
+
+			/*
+			 * Template template = Velocity.getTemplate("templates/eu_accountActivation.vm",
+			 * "UTF-8"); FileWriter fwriter = new FileWriter("eu_accountActivation.html");
+			 * StringWriter writer = new StringWriter(); template.merge(context, writer);
+			 * fwriter.write(writer.toString()); fwriter.close();
+			 */
+
+			test1.sendEmailWithTemplate("A-to-Be Xray Test Execution Report",
+					Arrays.asList("reshmi.g@thinkpalm.com", "nasia.t@thinkpalm.com"), "templates/xray_report.vm",
+					context);
 			test1.mailm("test-output/report.pdf");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
 	}
 

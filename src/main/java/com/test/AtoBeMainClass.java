@@ -2,6 +2,9 @@ package com.test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.testng.TestNG;
 import org.testng.reporters.JUnitXMLReporter;
 import org.testng.xml.XmlClass;
@@ -10,6 +13,7 @@ import org.testng.xml.XmlTest;
 /*import org.uncommons.reportng.HTMLReporter;
 */
 	public class AtoBeMainClass {
+		private static final Logger LOGGER = LogManager.getLogger(AtoBeMainClass.class);
 
 	  public static void main(String[] args) {
 
@@ -37,9 +41,7 @@ import org.testng.xml.XmlTest;
 	        classes.add(new XmlClass("com.test.Run"));
 
 	      } else {
-
-	        System.out.println("Wrong argument.");
-
+	      	LOGGER.info("Wrong argument.");
 	      }
 
 
@@ -53,7 +55,7 @@ import org.testng.xml.XmlTest;
 	      tng.run();
 
 	    } else {
-	      System.out.println("Please pass an argument to run a test.");
+	    	LOGGER.info("Please pass an argument to run a test.");
 	    }
 
 

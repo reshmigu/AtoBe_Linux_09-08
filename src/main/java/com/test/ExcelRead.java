@@ -3,25 +3,25 @@ package com.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelRead {
+	private static final Logger LOGGER = LogManager.getLogger(ExcelRead.class);
 
-	public FileInputStream fis = null;
-	public FileOutputStream fos = null;
-	public XSSFWorkbook workbook = null;
-	public XSSFSheet sheet = null;
-	public XSSFRow row = null;
-	public XSSFCell cell = null;
+	private FileInputStream fis = null;
+	//private FileOutputStream fos = null;
+	private XSSFWorkbook workbook = null;
+	private XSSFSheet sheet = null;
+	//private XSSFRow row = null;
+	//private XSSFCell cell = null;
 	String xlFilePath;
 	DataFormatter formatter = new DataFormatter();
 
@@ -31,14 +31,14 @@ public class ExcelRead {
 		try {
 			fis = new FileInputStream(new File(xlFilePath));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
 		try {
 			workbook = new XSSFWorkbook(fis);
 			sheet = workbook.getSheet("Credentials");
 			fis.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
 
 	}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestExecutionList {
-	private List<TestExecution> testExecution = new ArrayList<TestExecution>();
+	private List<TestExecution> testExecution = new ArrayList<>();
 
 	public List<TestExecution> getTestExecution() {
 		return testExecution;

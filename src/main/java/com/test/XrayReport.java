@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.ResourceBundle;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.test.xrayapis.TestExecution;
 
 public class XrayReport {
+	private static final Logger LOGGER = LogManager.getLogger(XrayReport.class);
 
 	private Workbook workbook = null;
 	private Sheet sheet = null;
@@ -28,7 +30,7 @@ public class XrayReport {
 	}
 
 	public void sendReportAsExcel(List<TestExecution> testExecution,String testExecutionKey) throws IOException {
-		System.err.println("EXCEL REPORT");
+		LOGGER.info("EXCEL REPORT");
 		sheet = workbook.createSheet(testExecutionKey + " execution Result");
 
 		int rowCount = 0;
@@ -47,7 +49,7 @@ public class XrayReport {
 		FileOutputStream fos = new FileOutputStream(new File(testExecutionKey + " execution Result.xlsx"));
 		workbook.write(fos);
 		fos.close();
-		mail mail = new mail();
+		Mail mail = new Mail();
 		mail.mailm(testExecutionKey + " execution Result.xlsx");
 	}
 

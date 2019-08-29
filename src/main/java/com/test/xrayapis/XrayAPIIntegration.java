@@ -21,13 +21,14 @@ public class XrayAPIIntegration {
 	private static final String BASE_URL = rb.getString("baseUrl");
 	private static final String CREATE_ISSUE_URL = rb.getString("create.issue");
 	private static final String CREATE_TEST_EXECUTION_URL = rb.getString("testexecution.get");
-	private static final String jira_username = rb.getString("jira.username");
-	private static final String jira_password = rb.getString("jira.password");
-	public List<TestExecution> getTestExecution(String testexecutionkey) {
+	private static final String JIRA_USERNAME = rb.getString("jira.username");
+	private static final String JIRA_PASSWORD = rb.getString("jira.password");
+	private static final String CONTENT_TYPE="application/json";
+	public static List<TestExecution> getTestExecution(String testexecutionkey) {
 		String exc = TEST_EXECUTION_GET_URL;
 		String api = exc.replace("execid", testexecutionkey);
 		RestAssured.baseURI = BASE_URL;
-		Response response = RestAssured.given().auth().preemptive().basic(jira_username, jira_password).get(api);
+		Response response = RestAssured.given().auth().preemptive().basic(JIRA_USERNAME, JIRA_PASSWORD).get(api);
 		if (response.getStatusCode() == 200) {
 			return Arrays.asList(response.getBody().as(TestExecution[].class));
 		}
@@ -40,7 +41,7 @@ public class XrayAPIIntegration {
 		String replacedUrl = testRunPutUrl.replace("id", "" + testRunId);
 		URIBuilder b = new URIBuilder(BASE_URL + replacedUrl);
 		URI u = b.addParameter("status", status).build();
-		Response response = RestAssured.given().auth().preemptive().basic(jira_username, jira_password).put(u);
+		Response response = RestAssured.given().auth().preemptive().basic(JIRA_USERNAME, JIRA_PASSWORD).put(u);
 		return response.getBody().prettyPrint();
 	}
 
@@ -50,45 +51,45 @@ public class XrayAPIIntegration {
 		b.addParameter("testIssueKey", testKey);
 		b.addParameter("testExecIssueKey", testexecutionkey);
 		URI url = b.build();
-		Response response = RestAssured.given().auth().preemptive().basic(jira_username, jira_password).get(url);
+		Response response = RestAssured.given().auth().preemptive().basic(JIRA_USERNAME, JIRA_PASSWORD).get(url);
 		if (response.getStatusCode() == 200)
 			return response.getBody().as(TestRun.class);
 		return null;
 	}
 
-	public String createIssue(CreateIssueDTO createIssueDTO) throws URISyntaxException {
+	public String createIssue(CreateIssueDTO createIssueDTO) {
 		String createIssueUrl = BASE_URL + CREATE_ISSUE_URL;
-		URIBuilder b = new URIBuilder(createIssueUrl);
-		URI u = b.build();
+	//	URIBuilder b = new URIBuilder(createIssueUrl);
+	//	URI u = b.build();
 		String test = String.format("{\"fields\": {\"project\":{\"key\": \"%s\"},\"summary\": \"%s\",\"description\":\"%s\",\"issuetype\": {\"name\": \"%s\"}}}",createIssueDTO.getKey(),createIssueDTO.getSummary(),createIssueDTO.getDescription(),createIssueDTO.getName());
-		RequestSpecification request = RestAssured.given().auth().preemptive().basic(jira_username, "Think@123");
-		request.contentType("application/json");
+		RequestSpecification request = RestAssured.given().auth().preemptive().basic(JIRA_USERNAME, "Think@123");
+		request.contentType(CONTENT_TYPE);
 		request.body(test);
 		Response response = request.post(createIssueUrl);
 		return response.body().as(ResponseDTO.class).getKey();
 	}
 
-	public int postTestExecution(String executionKey) throws URISyntaxException {
+	public int postTestExecution(String executionKey) {
 		String createExecutionUrl = BASE_URL + CREATE_TEST_EXECUTION_URL;
 		String api = createExecutionUrl.replace("execid", executionKey);
-		URIBuilder b = new URIBuilder(api);
-		URI u = b.build();
+	//	URIBuilder b = new URIBuilder(api);
+	//	URI u = b.build();
 		String test = "{\"add\": [ \"TP-3\", \"TP-2\",  \"TP-4\"]}";
-		RequestSpecification request = RestAssured.given().auth().preemptive().basic(jira_username,jira_password);
-		request.contentType("application/json");
+		RequestSpecification request = RestAssured.given().auth().preemptive().basic(JIRA_USERNAME,JIRA_PASSWORD);
+		request.contentType(CONTENT_TYPE);
 		request.body(test);
 		Response response = request.post(api);
 		return response.getStatusCode();
 
 	}
 
-	public ResponseDTO createIssueBug(CreateIssueDTO createIssueDTO) throws URISyntaxException {
+	public ResponseDTO createIssueBug(CreateIssueDTO createIssueDTO) {
 		String createIssueUrl = BASE_URL + CREATE_ISSUE_URL;
-		URIBuilder b = new URIBuilder(createIssueUrl);
-		URI u = b.build();
+		//URIBuilder b = new URIBuilder(createIssueUrl);
+	//	URI u = b.build();
 		String test =String.format( "{\"fields\":{\"project\":{\"key\":\"%s\" },\"summary\":\"%s\",\"description\":\"%s\",\"issuetype\":{\"name\":\"%s\"}},\"update\":{\"issuelinks\":[{\"add\":{\"type\":{\"name\":\"Blocks\",\"inward\":\"is blocked by\",\"outward\":\"blocks\"},\"outwardIssue\":{\"key\":\"%s\" }}}]}}",createIssueDTO.getKey(),createIssueDTO.getSummary(),createIssueDTO.getDescription(),createIssueDTO.getName(),createIssueDTO.getTestKey());
-		RequestSpecification request = RestAssured.given().auth().preemptive().basic(jira_username, jira_password);
-		request.contentType("application/json");
+		RequestSpecification request = RestAssured.given().auth().preemptive().basic(JIRA_USERNAME, JIRA_PASSWORD);
+		request.contentType(CONTENT_TYPE);
 		request.body(test);
 		Response response = request.post(createIssueUrl);
 		return response.body().as(ResponseDTO.class);
